@@ -1,1 +1,31 @@
+The Idea is to First Localize or Segment The Affected area and ask few Questions. after the response of user is Considered into Consideration Specialized model wil be used for Disease Diagnosis. Questions like this will be asked.
 
+
+Help identify the Model which Skin Condition are you Facing.
+
+Where is the skin condition located?
+
+Face
+Torso
+Arms
+Legs
+
+
+Is the affected area exposed to sunlight?
+
+Yes
+No
+Unsure
+
+
+
+What is the age of the individual experiencing the skin condition?
+
+Child
+Teenager
+Adult
+Senior
+
+For Now I Should Be focusing on this:
+
+Face or Other
