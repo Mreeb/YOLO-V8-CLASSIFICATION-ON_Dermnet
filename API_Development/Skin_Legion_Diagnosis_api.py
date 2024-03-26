@@ -42,9 +42,15 @@ def classification():
         result = {dict1[key]: value for key, value in dict2.items()}
 
         try:
-            result['no_Disease'] = result.pop('Unlabeled')
+            result['No_disease'] = result.pop('Unlabeled')
         except:
             pass
+
+        try:
+            result['Nail-Onychopathies'] = result.pop('Nail Onychopathies')
+        except:
+            pass
+
 
         top_confidence = 100 * float(results.probs.top1conf.item())
         print(top_confidence)
@@ -65,8 +71,9 @@ def classification():
             diseases.append(key)
             links.append(link(key))
 
-        result = [[disease, confidence, link] for disease, confidence, link in zip(diseases, conf, links)]
+        combined_list = [[disease, confidence, link] for disease, confidence, link in zip(diseases, conf, links)]
 
+        result = sorted(combined_list, key=lambda x: x[1], reverse=True)
 
         response = {
             "top": [round(top_confidence, 2), flag],
