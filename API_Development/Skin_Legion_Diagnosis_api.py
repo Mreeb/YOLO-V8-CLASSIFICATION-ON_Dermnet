@@ -6,7 +6,6 @@ from flask_cors import CORS
 from google_link import link
 import os
 
-
 app = Flask(__name__)
 
 CORS(app)
@@ -20,7 +19,7 @@ def classification():
         image_file = request.files['image']
         user_id = request.form.get("user_id")
 
-        model = YOLO('5disease.pt')
+        model = YOLO('model1.pt')
 
         burn_dir = "TEST_BURN_IMAGES"
         os.makedirs(burn_dir, exist_ok=True)
@@ -74,10 +73,12 @@ def classification():
         combined_list = [[disease, confidence, link] for disease, confidence, link in zip(diseases, conf, links)]
 
         result = sorted(combined_list, key=lambda x: x[1], reverse=True)
+        converted_list = [{"Disease": item[0], "Percent": item[1], "Link": item[2]} for item in result]
 
+        # converted_dict = {"Conf": round(top_confidence, 2), "status": flag}
         response = {
-            "top": [round(top_confidence, 2), flag],
-            "Result": result
+            "top": {"Conf": round(top_confidence, 2), "status": flag},
+            "Result": converted_list
         }
 
         return jsonify(response), 200
@@ -94,7 +95,7 @@ def skin_burn():
         image_file = request.files['image']
         user_id = request.form.get("user_id")
 
-        model = YOLO("Skin_burn.pt")
+        model = YOLO("model2.pt")
 
         disease_dir = "TEST_DISEASE_IMAGES"
         os.makedirs(disease_dir, exist_ok=True)
@@ -126,9 +127,9 @@ def skin_burn():
         combined_list = [[burn_degree, confidence] for burn_degree, confidence in zip(degree, per_conf)]
 
         result = sorted(combined_list, key=lambda x: x[1], reverse=True)
-
+        converted_list = [{"Degree": item[0], "Percent": item[1]} for item in result]
         response = {
-            "Result": result
+            "Result": converted_list
         }
 
         return jsonify(response), 200
@@ -138,4 +139,4 @@ def skin_burn():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=True, port = 5000)
+    app.run(host="0.0.0.0", debug=True, port=8080)
